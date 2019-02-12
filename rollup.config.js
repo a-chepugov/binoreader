@@ -1,7 +1,7 @@
 export default {
     input: 'scripts/index.js',
     output: {
-        file: 'index.js',
+        file: 'build/index.js',
         format: 'iife',
         sourceMap: 'inline',
     },

@@ -53,3 +53,11 @@ html body {
 .content {
     font-size: 500%;
 }
+
+.controls {
+    position: absolute;
+    opacity: 0.5;
+    width: 100%;
+    z-index: 10;
+    bottom: 0;
+}
