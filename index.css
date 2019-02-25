@@ -54,7 +54,7 @@ html body {
     font-size: 500%;
 }
 
-.controls {
+#controls {
     position: absolute;
     opacity: 0.5;
     width: 100%;

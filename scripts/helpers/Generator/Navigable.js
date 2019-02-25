@@ -1,44 +1,68 @@
 /**
- *
+ * @class
  */
-export default class {
-    /**
-     *
-     * @param {function} fn
-     * @param {number} [portion=1]
-     * @param {number} [position=0]
-     */
-    constructor(fn = (a) => a, portion = 1, position = 0) {
-        this.portion = portion;
-        this.position = position;
-        this.fn = fn;
-    }
+export default class Navigable {
+	/**
+	 * @param {function():Iterator.next} fn
+	 */
+	constructor(fn = (position) => ({value: position, done: false})) {
+		this._fn = fn;
+	}
 
-    get portion() {
-        return this._portion;
-    }
+	get position() {
+		return this._position;
+	}
 
-    set portion(value) {
-        this._portion = Number.isInteger(value) && value > 0 ? value : 1;
-    }
+	set position(value) {
+		this._position = Number.isInteger(value) ? value : this._position;
+	}
 
-    get position() {
-        return this._position;
-    }
+	/**
+	 * @return {Iterator.next}
+	 */
+	back() {
+		this.position = Number.isInteger(this.position) ? this.position - 1 : 0;
+		return this.take(this.position);
+	}
 
-    set position(value) {
-        this._position = Number.isInteger(value) && value > 0 ? value : 0;
-    }
+	/**
+	 * @return {Iterator.next}
+	 */
+	current() {
+		return this.take(this.position);
+	}
 
-    previous() {
-        return this.fn.call(this, this.position--, this.portion);
-    }
+	/**
+	 * @return {Iterator.next}
+	 */
+	next() {
+		this.position = Number.isInteger(this.position) ? this.position + 1 : 0;
+		return this.take(this.position);
+	}
 
-    current() {
-        return this.fn.call(this, this.position, this.portion);
-    }
+	/**
+	 * @param {number} value
+	 * @return {*}
+	 */
+	skip(value) {
+		return this.position = Number.isInteger(this.position) ? this.position + value : value;
+	}
 
-    next() {
-        return this.fn.call(this, this.position++, this.portion);
-    }
+	/**
+	 * @param {number} position
+	 * @return {*}
+	 */
+	take(position) {
+		return this._fn.call(this, position);
+	}
+
+	[Symbol.iterator]() {
+		return this;
+	}
+
+	/**
+	 * @typedef {object} Iterator.next
+	 * @property {boolean} done
+	 * @property {any} value
+	 */
 }
